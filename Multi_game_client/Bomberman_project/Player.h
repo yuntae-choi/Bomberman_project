@@ -1,6 +1,6 @@
 #pragma once
-#include "protocol.h"
 #include "stdafx.h"
+#include "protocol.h"
 
 class Player
 {

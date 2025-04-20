@@ -1,9 +1,10 @@
 #include "resource.h"
-#include "Player.h"
-#include "Object.h"
+#include "stdafx.h"
 #include "protocol.h"
 #include "json/json.h"
-#include "stdafx.h"
+#include "Player.h"
+#include "Object.h"
+
 
 ////////////////////////////////////////////////////////////////////////////
 //--- 전역 변수
@@ -132,7 +133,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	closesocket(sock);
 	WSACleanup();
 
-	return Message.wParam;
+	return (int)Message.wParam;
 }
 
 
@@ -160,10 +161,10 @@ DWORD WINAPI ClientMain(LPVOID arg)
 	char IP_NUM[16 + 3 + 1];
 	u_short PORT_NUM;
 
-	strcat(IP_NUM, input_ip_str[0]); strcat(IP_NUM, ".");
-	strcat(IP_NUM, input_ip_str[1]); strcat(IP_NUM, ".");
-	strcat(IP_NUM, input_ip_str[2]); strcat(IP_NUM, ".");
-	strcat(IP_NUM, input_ip_str[3]);
+	strcat_s(IP_NUM, input_ip_str[0]); strcat_s(IP_NUM, ".");
+	strcat_s(IP_NUM, input_ip_str[1]); strcat_s(IP_NUM, ".");
+	strcat_s(IP_NUM, input_ip_str[2]); strcat_s(IP_NUM, ".");
+	strcat_s(IP_NUM, input_ip_str[3]);
 
 	PORT_NUM = (u_short)atoi(input_port_str);
 
@@ -318,8 +319,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
-	HDC mem1dc, mem2dc;
-
+	HDC mem1dc = { 0 };
+	HDC mem2dc = { 0 };
+	
 	static HBITMAP hBit_main, hBit_bg;
 	static HBITMAP hBit_issac, hBit_magdalene, hBit_lazarus, hBit_samson, hBit_eve, hBit_issac_hurt, hBit_magdalene_hurt, hBit_lazarus_hurt, hBit_samson_hurt, hBit_eve_hurt;
 	static HBITMAP hBit_block, hBit_bomb, hBit_bomb_fuse, hBit_rock, hBit_heart, hBit_explosion;
@@ -994,16 +996,16 @@ void Err_quit(const char* msg)
 		char msg_[50];
 		char IP_NUM[16 + 3 + 1];
 
-		strcat(IP_NUM, input_ip_str[0]); strcat(IP_NUM, ".");
-		strcat(IP_NUM, input_ip_str[1]); strcat(IP_NUM, ".");
-		strcat(IP_NUM, input_ip_str[2]); strcat(IP_NUM, ".");
-		strcat(IP_NUM, input_ip_str[3]);
+		strcat_s(IP_NUM, input_ip_str[0]); strcat_s(IP_NUM, ".");
+		strcat_s(IP_NUM, input_ip_str[1]); strcat_s(IP_NUM, ".");
+		strcat_s(IP_NUM, input_ip_str[2]); strcat_s(IP_NUM, ".");
+		strcat_s(IP_NUM, input_ip_str[3]);
 
-		strcpy(msg_, msg);
-		strcat(msg_, "           아이피 - ");
-		strcat(msg_, IP_NUM);
-		strcat(msg_, ", 포트번호 - ");
-		strcat(msg_, input_port_str);
+		strcpy_s(msg_, msg);
+		strcat_s(msg_, "           아이피 - ");
+		strcat_s(msg_, IP_NUM);
+		strcat_s(msg_, ", 포트번호 - ");
+		strcat_s(msg_, input_port_str);
 
 		MessageBox(NULL, (LPCTSTR)lpMsgBuf, msg_, MB_ICONERROR);
 	}
@@ -1084,8 +1086,8 @@ void Load_Map(tileArr<int, tile_max_w_num, tile_max_h_num> &map, const char* map
 	else {
 		char msg[256]{ "" };
 		char _msg[]{ " 맵을 불러오지 못하였습니다." } ;
-		strcat(msg, map_path);
-		strcat(msg, _msg);
+		strcat_s(msg, map_path);
+		strcat_s(msg, _msg);
 		MessageBox(NULL, msg , "ERROR - Parse failed", MB_ICONERROR);
 		json_map.close();
 		exit(0);
